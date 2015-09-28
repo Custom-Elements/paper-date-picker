@@ -174,7 +174,7 @@
           var months = [];
           var month, weeks, day, d, dayInfo, monthData, date = new Date();
 
-          for (var year in years) {
+          years.forEach( function (year, i, years) {
             date.setYear(year);
             date.setHours(0, 0, 0, 0);
 
@@ -224,7 +224,7 @@
               months.push(monthData);
             }
             this.set('_months', months);
-          }
+          });
         },
         isoFormat: function(year, month, day) {
           var date;
