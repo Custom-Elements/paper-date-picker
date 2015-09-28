@@ -89,7 +89,7 @@
            */
           minYear: {
             type: Number,
-            value: (new Date()).setFullYear((new Date()).getFullYear - 1)
+            value: (new Date()).getFullYear() - 1
           },
           /*
            * The maximum allowable year
@@ -99,7 +99,7 @@
            */
           maxYear: {
             type: Number,
-            value: (new Date()).setFullYear((new Date()).getFullYear + 1)
+            value: (new Date()).getFullYear() + 1
           },
           initialDate: {
             type: Date,
@@ -223,8 +223,8 @@
               };
               months.push(monthData);
             }
-            this.set('_months', months);
-          });
+          }, this);
+          this.set('_months', months);
         },
         isoFormat: function(year, month, day) {
           var date;
