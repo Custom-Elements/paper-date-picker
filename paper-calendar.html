@@ -85,21 +85,21 @@
            * The minumum allowable year
            * @attribute minYear
            * @type int
-           * @default 1900
+           * @default -1 year
            */
           minYear: {
             type: Number,
-            value: 1900
+            value: (new Date()).setFullYear((new Date()).getFullYear - 1)
           },
           /*
            * The maximum allowable year
            * @attribute maxYear
            * @type int
-           * @default 2100
+           * @default +1 year
            */
           maxYear: {
             type: Number,
-            value: 2100
+            value: (new Date()).setFullYear((new Date()).getFullYear + 1)
           },
           initialDate: {
             type: Date,
