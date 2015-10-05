@@ -301,6 +301,8 @@
             return false;
           }
           this.date = event.model.item.date;
+          event.model.item.label = event.model.item.name;
+          this.fire('iron-select', event.model);
         },
         _isDateInBounds: function(date) {
           return !date || (
