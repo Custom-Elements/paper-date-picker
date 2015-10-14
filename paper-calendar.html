@@ -206,7 +206,7 @@
                 }
                 dayInfo = {
                   date: new Date(year, month, day),
-                  name: this.isoFormat(year, month, day),
+                  name: this.isoFormat(new Date(year, month, day)),
                   year: year,
                   month: month,
                   day: day,
