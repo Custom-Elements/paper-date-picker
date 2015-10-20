@@ -145,6 +145,13 @@
           setInterval(this._updateToday, 60000);
 
           this.scrollToDate(this.initialDate);
+          this.fire('iron-select',
+            {
+              'item':{
+                'label': this.isoFormat(this.initialDate)
+              }
+            }
+          );
         },
         _computeYear(initialDate, minDate, maxDate) {
           var year = initialDate.getFullYear();
