@@ -42,7 +42,7 @@
         is: 'paper-calendar',
         properties: {
           /*
-           * The selected date
+           * The date selected
            * @attribute date
            * @type Date
            */
@@ -51,6 +51,15 @@
             notify: true,
             value: null,
             observer: '_dateChanged'
+          },
+          /*
+           * Previously set date passed in
+           * @attribute defaultDate
+           * @type String
+           */
+          defaultDate: {
+            type: String,
+            value: null
           },
           /**
            * The current locale
@@ -144,11 +153,15 @@
 
           setInterval(this._updateToday, 60000);
 
+          if (this.defaultDate) {
+            this.initialDate = new Date(this.defaultDate);
+          }
           this.scrollToDate(this.initialDate);
           this.fire('iron-select',
             {
               'item':{
-                'label': this.isoFormat(this.initialDate)
+                'label': this.isoFormat(this.initialDate),
+                'date': this.initialDate
               }
             }
           );
