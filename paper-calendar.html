@@ -52,15 +52,6 @@
             value: null,
             observer: '_dateChanged'
           },
-          /*
-           * Previously set date passed in
-           * @attribute defaultDate
-           * @type String
-           */
-          defaultDate: {
-            type: String,
-            value: null
-          },
           /**
            * The current locale
            * @attribute locale
@@ -112,7 +103,7 @@
           },
           initialDate: {
             type: Date,
-            computed: '_setInitialDate(defaultDate)'
+            computed: '_setInitialDate(date)'
           },
           _year: {
             type: Number,
@@ -151,11 +142,6 @@
 
           setInterval(this._updateToday, 60000);
 
-          /*
-          if (this.defaultDate) {
-            this.initialDate = new Date(this.defaultDate);
-          }
-          */
           this.scrollToDate(this.initialDate);
           this.fire('iron-select',
             {
@@ -304,10 +290,9 @@
           //}
         },
         scrollToDate: function(date) {
-          if (!date) {
-            date = this.initialDate || this.today;
+          if (date) {
+            this.scrollToMonth(date.getFullYear(), date.getMonth());
           }
-          this.scrollToMonth(date.getFullYear(), date.getMonth());
         },
         _dateChanged: function(date) {
           if (date) {
@@ -335,9 +320,9 @@
         _resizeHandler: function() {
           this.updateSize();
         },
-        _setInitialDate: function(defaultDate) {
-          if (defaultDate) {
-            return new Date(defaultDate);
+        _setInitialDate: function(date) {
+          if (date) {
+            return date;
           } else {
             return this.today || new Date();
           }
