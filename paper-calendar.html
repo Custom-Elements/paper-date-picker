@@ -112,9 +112,7 @@
           },
           initialDate: {
             type: Date,
-            value: function() {
-              return this.today || new Date();
-            },
+            computed: '_setInitialDate(defaultDate)'
           },
           _year: {
             type: Number,
@@ -153,9 +151,11 @@
 
           setInterval(this._updateToday, 60000);
 
+          /*
           if (this.defaultDate) {
             this.initialDate = new Date(this.defaultDate);
           }
+          */
           this.scrollToDate(this.initialDate);
           this.fire('iron-select',
             {
@@ -335,6 +335,13 @@
         },
         _resizeHandler: function() {
           this.updateSize();
+        },
+        _setInitialDate: function(defaultDate) {
+          if (defaultDate) {
+            return new Date(defaultDate);
+          } else {
+            return this.today || new Date();
+          }
         },
         updateSize: function() {
           if (this.$.calendarList.offsetHeight > 0) {
