@@ -284,6 +284,8 @@
           return (yearDiff * 12) + monthDiff;
         },
         scrollToMonth: function(year, month) {
+          if (this._sized) {
+          /*
           if (!this._sized) {
             var _this = this;
             this.addEventListener('paper-calendar-sized', function() {
@@ -291,6 +293,7 @@
               _this.removeEventListener('paper-calendar-sized', this);
             });
           } else {
+          */
             var sel = '.month-' + year + '-' + month;
             if (Polymer.Settings.useNativeShadow) {
               sel = ':host /deep/ ' + sel;
