@@ -284,7 +284,6 @@
           return (yearDiff * 12) + monthDiff;
         },
         scrollToMonth: function(year, month) {
-          if (this._sized) {
           /*
           if (!this._sized) {
             var _this = this;
@@ -302,7 +301,7 @@
             if (el) {
               this.$.calendarList.scrollTop = el.offsetTop;
             }
-          }
+          //}
         },
         scrollToDate: function(date) {
           if (!date) {
