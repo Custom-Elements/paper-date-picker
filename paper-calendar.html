@@ -12,7 +12,7 @@
       <template is="dom-repeat" items="{{_months}}" as="month">
         <div class$="{{getMonthClass(month)}}">
           <div class="month-header">
-            <div class="month-name" on-tap="_tapMonth">
+            <div class="month-name">
               <span>{{getMonthName(month.month)}}</span> <span>{{month.year}}</span>
             </div>
             <div class="month-weekdays">
@@ -141,16 +141,6 @@
           this.localeChanged();
 
           setInterval(this._updateToday, 60000);
-
-          this.scrollToDate(this.initialDate);
-          this.fire('iron-select',
-            {
-              'item':{
-                'label': this.isoFormat(this.initialDate),
-                'date': this.initialDate
-              }
-            }
-          );
         },
         _computeYear: function(initialDate, minDate, maxDate) {
           var year = initialDate.getFullYear();
@@ -247,13 +237,7 @@
           );
         },
         getDayClass: function(cssClass, date) {
-          if (!date) {
-            return cssClass;
-          }
-          if (date.getTime() === this.today.getTime()) {
-            cssClass += ' today';
-          }
-          if (this.date && date.getTime() === this.date.getTime()) {
+          if (date && (this.date.toLocaleDateString() === date.toLocaleDateString())) {
             cssClass += ' selected';
           }
           return cssClass;
@@ -269,17 +253,22 @@
           var monthDiff = (month - this._months[0].month);
           return (yearDiff * 12) + monthDiff;
         },
-        scrollToMonth: function(year, month) {
-          /*
-          if (!this._sized) {
-            var _this = this;
-            this.addEventListener('paper-calendar-sized', function() {
-              this.scrollToMonth(year, month);
-              _this.removeEventListener('paper-calendar-sized', this);
-            });
-          } else {
-          */
-            var sel = '.month-' + year + '-' + month;
+        _dateChanged: function(newDate, oldDate) {
+          if (newDate) {
+            this.scrollToMonth();
+            this.fire('iron-select',
+              {
+                "item": {
+                  "label": this.isoFormat(this.date),
+                  "date": this.date
+                }
+              }
+            );
+          }
+        },
+        scrollToMonth: function() {
+          if (this.date) {
+            var sel = '.month-' + this.date.getFullYear() + '-' + this.date.getMonth();
             if (Polymer.Settings.useNativeShadow) {
               sel = ':host /deep/ ' + sel;
             }
@@ -287,21 +276,7 @@
             if (el) {
               this.$.calendarList.scrollTop = el.offsetTop;
             }
-          //}
-        },
-        scrollToDate: function(date) {
-          if (date) {
-            this.scrollToMonth(date.getFullYear(), date.getMonth());
           }
-        },
-        _dateChanged: function(date) {
-          if (date) {
-            this.scrollToDate(date);
-          }
-        },
-        _tapMonth: function(event) {
-          var month = event.model.month;
-          this.scrollToMonth(month.year, month.month);
         },
         _tapDay: function(event) {
           if (!this._isDateInBounds(event.model.item.date)) {
@@ -318,21 +293,16 @@
           );
         },
         _resizeHandler: function() {
-          this.updateSize();
+          if (this.$.calendarList.offsetHeight > 0) {
+            this.scrollToMonth();
+          }
         },
         _setInitialDate: function(date) {
           if (date) {
             return date;
           } else {
-            return this.today || new Date();
-          }
-        },
-        updateSize: function() {
-          if (this.$.calendarList.offsetHeight > 0) {
-            this._sized = true;
-            this.fire('paper-calendar-sized');
-          } else {
-            this._sized = false;
+            this._updateToday();
+            return this.today;
           }
         },
         getMonthName: function(month) {
