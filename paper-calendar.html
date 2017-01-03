@@ -237,7 +237,7 @@
           );
         },
         getDayClass: function(cssClass, date) {
-          if (date && (this.date.toLocaleDateString() === date.toLocaleDateString())) {
+          if (date && this.date && (this.date.toLocaleDateString() === date.toLocaleDateString())) {
             cssClass += ' selected';
           }
           return cssClass;
